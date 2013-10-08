@@ -14,14 +14,11 @@ rules = [
      'norm'    : 'http://www.target.com/c/{c1}/-/N-{c1id}',
      },
 
-
     {'name'    : 'sb_list',
      'pattern' : '^/sb/(?P<c1>.*?)/-/N-(?P<c1id>.*?)([&#?]|$)',
      'action'  : 'list',
      'norm'    : 'http://www.target.com/sb/{c1}/-/N-{c1id}',
      },
-
-
 
      {'name'    : 'search',
      'pattern' : '^/s([&#?]|$)',
@@ -33,6 +30,18 @@ rules = [
     {'name'    : 'irrelevant_domain',
      'hpattern': '(hrportal|corporate|targetcareers|mail|seclogin|redcard|samples|targetcareers|secureconnect|babycatalog|prefs|catalogs|patio\.catalogs|baby\.catalogs|m|fstl|wedding|virtualoffice|guestlogin|webmail|redirect|imgsvc-secure|m\.weeklyad)',
      'action'  : 'irrelevant'},  
+
+    {'name'    : 'view_cart',
+     'pattern' : 'checkout_cartview',
+     'action'  : 'view cart',
+     'norm'    : 'http://www.target.com/checkout_cartview'
+    },
+
+    {'name'    : 'store_locator',
+     'pattern' : '^/store-locator',
+     'action'  : 'store_locator'
+    },  
+
 
     # {'name'    : 'irrelevant_domain',
     #  'hpattern': '(jobs|parts|intra|services|entertainment|webservices|marketplace|personalization|books|s7)',
