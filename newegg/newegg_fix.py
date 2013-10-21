@@ -31,7 +31,7 @@ rules = [
      {'name'    : 'product_list',
      'pattern' : '^/Product/ProductList.aspx([#?]|$)',
      'action'  : 'list',
-     'qpattern': '(?P<query>N|Description?)=(?P<search>.*?)([&]|$)',
+     # 'qpattern': '(?P<query>.*?)=(?P<search>.*?)([&]|$)',
      'norm'    : 'http://www.newegg.com/Product/ProductList.aspx?{query}={search}',
      },
 
@@ -106,7 +106,7 @@ rules = [
 
     
    {'name'    : 'irrelevant_domain',
-     'hpattern': '(e|m|images|sellerportal|ssl-images|blog|secure.m|www.www.biz|download|wireless|help|promotions)',
+     'hpattern': '(images|sellerportal|ssl-images|blog|secure.m|www.www.biz|download|wireless|help|promotions)',
      'action'  : 'irrelevant'},    
 
     {'name'    : 'irrelevant',
@@ -117,6 +117,7 @@ rules = [
 ]
 
 params = [
+    {'qpattern': 'N=(?P<c1id>.*?)([&]|$)'},
     {'qpattern': 'Description=(?P<search>.*?)([&]|$)'},
 ]
 
@@ -153,12 +154,10 @@ examples = [
         'rule': 'product_list'
     }],
 
-    ['http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&IsNodeId=1&Description=24%20inch%20monitor&bop=And&Order=PRICE&PageSize=20,1',
+    ['http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&N=-1&IsNodeId=1&Description=24%20inch%20monitor&bop=And&Order=PRICE&PageSize=20,1',
     {
-        'norm': 'http://www.newegg.com/Product/ProductList.aspx?Description=24%20inch%20monitor',
+        'norm': 'http://www.newegg.com/Product/ProductList.aspx',
         'action': 'list',
-        'query' : 'Description',
-        'search': '24%20inch%20monitor',
         'rule': 'product_list'
     }],
 

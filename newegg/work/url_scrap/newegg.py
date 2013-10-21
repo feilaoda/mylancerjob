@@ -31,6 +31,11 @@ def parse_product_list(x, item):
                 names = x.select('//div[@class="wrap_description"]/a[@class="descText"]/span/text()').extract()   
                 if names:
                     item['scrap_pn'] = names[0].strip()
+                else:
+                    names = x.select('//a[@class="ProductTitle"]/text()').extract()   
+                    if names:
+                        item['scrap_pn'] = names[0].strip()
+
                 
 
     return item
@@ -48,6 +53,7 @@ parsers = {
     'product': parse_product,
     'shocker_product': parse_shocker_product,
     'promotion_store_list': parse_product_list,
+    'promotions_list': parse_product_list,
     'product_list': parse_product_list,
     'store_list': parse_product_list,
     'promotion_store_list': parse_product_list,

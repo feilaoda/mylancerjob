@@ -16,30 +16,40 @@ rules = [
      'norm'    : 'http://www.newegg.com/Special/ShellShocker.aspx',
      },
     
+
     {'name'    : 'store_list',
      'pattern' : '^/(?P<c1>.*?)/Store([&#?]|$)',
      'action'  : 'list',
      'norm'    : 'http://www.newegg.com/{c1}/Store',
      },
 
-    {'name'    : 'list',
-     'pattern' : '^/(?P<c1>.*?)/(?P<word>.*?)/ID-(?P<c1id>.*?)([,/&#?]|$)',
+    {'name'    : 'promotion_store_list',
+     'pattern' : '^/(?P<c1>.*?)/PromotionStore/ID-(?P<c1id>.*?)([,/&#?]|$)',
      'action'  : 'list',
-     'norm'    : 'http://www.newegg.com/{c1}/{word}/ID-{c1id}',
+     'norm'    : 'http://www.newegg.com/{c1}/PromotionStore/ID-{c1id}',
      },
 
-     {'name'    : 'product_list',
-     'pattern' : '^/Product/ProductList.aspx([#?]|$)',
-     'action'  : 'list',
-     'qpattern': '(?P<query>N|Description?)=(?P<search>.*?)([&]|$)',
-     'norm'    : 'http://www.newegg.com/Product/ProductList.aspx?{query}={search}',
-     },
-
-     {'name'    : 'promotions_list',
+    {'name'    : 'promotions_list',
      'hpattern': 'promotions',
      'pattern' : '^/(?P<c1>.*?)/(?P<c1id>.*?)/index.html',
      'action'  : 'list',
      'norm'    : 'http://promotions.newegg.com/{c1}/{c1id}/index.html',
+     },
+
+     
+     {'name'    : 'product_list',
+     'pattern' : '^/Product/ProductList.aspx([#?]|$)',
+     'action'  : 'list',
+     # 'qpattern': 'N=(?P<pid>.*?)([&]|$)',
+     'norm'    : 'http://www.newegg.com/Product/ProductList.aspx',
+     },
+
+   
+
+    {'name'    : 'sub_list',
+     'pattern' : '^/(?P<c1>.*?)/SubCategory/ID-(?P<c1id>.*?)([,/&#?]|$)',
+     'action'  : 'list',
+     'norm'    : 'http://www.newegg.com/{c1}/SubCategory/ID-{c1id}',
      },
 
      {'name'    : 'daily_list',
@@ -53,61 +63,60 @@ rules = [
      'action'  : 'list',
      'norm'    : 'http://www.newegg.com/Index.aspx',
      },
+
      
     {'name'    : 'combodeals_list',
      'pattern' : '^/Store/ComboDeals.aspx([?]|$)',
      'action'  : 'list',
      'norm'    : 'http://www.newegg.com/Store/ComboDeals.aspx',
-     },    
+     },
+
+     
+     {'name'    : 'brand_list',
+     'pattern' : '^/(?P<c1>.*?)/BrandStore/ID-(?P<c1id>.*?)([,?]|$)',
+     'action'  : 'list',
+     'norm'    : 'http://www.newegg.com/{c1}/BrandStore/ID-{c1id}',
+     },
 
     {'name'    : 'add_cart',
      'pattern' : '^/Shopping/AddToCart.aspx([?]|$)',
      'hpattern': 'secure',
-     'action'  : 'cart',
+     'action'  : 'add cart',
      'norm'    : 'http://secure.newegg.com/Shopping/AddToCart.aspx'
     },
 
     {'name'    : 'view_shop_item',
      'pattern' : '^/Shopping/ShoppingItem.aspx([?]|$)',
-     'action'  : 'cart',
+     'action'  : 'view cart',
      'norm'    : 'http://www.newegg.com/Shopping/ShoppingItem.aspx'
     },
 
     {'name'    : 'view_shop_cart',
      'pattern' : '^/Shopping/ShoppingCart.aspx([?]|$)',
      'hpattern': 'secure',
-     'action'  : 'cart',
+     'action'  : 'view cart',
      'norm'    : 'http://secure.newegg.com/Shopping/ShoppingCart.aspx'
-    },
-
-    {'name'    : 'purchase_guest',
-     'spattern' : 'https',
-     'hpattern': 'secure',
-     'pattern' : '^/Guest/CheckoutStep4.aspx',
-     'action'  : 'purchase',
-     'norm'    : 'https://secure.newegg.com/Guest/CheckoutStep4.aspx'
-    },
-
-    {'name'    : 'purchase_registered',
-     'spattern' : 'https',
-     'hpattern': 'secure',
-     'pattern' : '^/Shopping/CheckoutStep3.aspx',
-     'action'  : 'purchase',
-     'norm'    : 'https://secure.newegg.com/Shopping/CheckoutStep3.aspx'
     },
 
     {'name'    : 'checkout',
      'spattern' : 'https',
      'hpattern': 'secure',
-     'pattern' : '^/(?P<word>.*?)/CheckoutStep(?P<num>[0-9]*?).aspx',
+     'pattern' : '^/Shopping/CheckoutStep1.aspx',
      'action'  : 'checkout',
-     'norm'    : 'https://secure.newegg.com/{word}/CheckoutStep{num}.aspx'
+     'norm'    : 'https://secure.newegg.com/Shopping/CheckoutStep1.aspx'
     },
 
     
    {'name'    : 'irrelevant_domain',
-     'hpattern': '(e|m|images|sellerportal|ssl-images|blog|secure.m|www.www.biz|download|wireless|help|promotions)',
-     'action'  : 'irrelevant'},    
+     'hpattern': '(e|m|images17|sellerportal|ssl-images|ww|blog|secure.m|www.www.biz|images10|download|wireless|help|promotions)',
+     'action'  : 'irrelevant'},  
+
+    {'name'    : 'irrelevant_domain',
+     'spattern': 'https',
+     'hpattern': '(wireless)',
+     'action'  : 'irrelevant'},  
+
+     
 
     {'name'    : 'irrelevant',
      'pattern' : '^/(Info|Special|marketplace|landingpage|win)',
@@ -117,7 +126,8 @@ rules = [
 ]
 
 params = [
-    {'qpattern': 'Description=(?P<search>.*?)([&]|$)'},
+    {'qpattern': 'searchTerm=(?P<search>.*?)([&]|$)'},
+    {'qpattern': 'category=(?P<c1id>.*?)%7CAll%7Cmatchallpartial%7C(?P<c1>.*?)([&]|$)'},
 ]
 
 examples = [
@@ -146,19 +156,15 @@ examples = [
 
     ['http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&N=100007603%20600003274%20600003290&IsNodeId=1&name=500GB,1',
     {
-        'norm': 'http://www.newegg.com/Product/ProductList.aspx?N=100007603%20600003274%20600003290',
+        'norm': 'http://www.newegg.com/Product/ProductList.aspx',
         'action': 'list',
-        'query': 'N',
-        'search': '100007603%20600003274%20600003290',
         'rule': 'product_list'
     }],
 
-    ['http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&IsNodeId=1&Description=24%20inch%20monitor&bop=And&Order=PRICE&PageSize=20,1',
+    ['http://www.newegg.com/Product/ProductList.aspx?Submit=ENE&N=-1&IsNodeId=1&Description=24%20inch%20monitor&bop=And&Order=PRICE&PageSize=20,1',
     {
-        'norm': 'http://www.newegg.com/Product/ProductList.aspx?Description=24%20inch%20monitor',
+        'norm': 'http://www.newegg.com/Product/ProductList.aspx',
         'action': 'list',
-        'query' : 'Description',
-        'search': '24%20inch%20monitor',
         'rule': 'product_list'
     }],
 
@@ -168,19 +174,29 @@ examples = [
         'norm': 'http://www.newegg.com/72-Hour-Month-End-Overstock-Supersale/PromotionStore/ID-184',
         'action': 'list',
         'c1': '72-Hour-Month-End-Overstock-Supersale',
-        'word': 'PromotionStore',
         'c1id': '184',
-        'rule': 'list'
+        'rule': 'promotion_store_list'
     }],
+
+    ['http://promotions.newegg.com/Fujitsu/13-0258/index.html',
+    {
+        'norm': 'http://promotions.newegg.com/Fujitsu/13-0258/index.html',
+        'action': 'list',
+        'c1': 'Fujitsu',
+        'c1id': '13-0258',
+        'rule': 'promotions_list'
+    }],
+
+
+    
 
     ['http://www.newegg.com/All-Headphones-Accessories/SubCategory/ID-70/Page-2,2',
     {
         'norm':'http://www.newegg.com/All-Headphones-Accessories/SubCategory/ID-70',
         'action':'list',
         'c1': 'All-Headphones-Accessories',
-        'word': 'SubCategory',
         'c1id': '70',
-        'rule': 'list'
+        'rule': 'sub_list'
     }],
 
     ['http://www.newegg.com/All-Case-Covers/SubCategory/ID-612,3',
@@ -188,9 +204,8 @@ examples = [
         'norm':'http://www.newegg.com/All-Case-Covers/SubCategory/ID-612',
         'action':'list',
         'c1': 'All-Case-Covers',
-        'word': 'SubCategory',
         'c1id': '612',
-        'rule': 'list'
+        'rule': 'sub_list'
     }],
 
 
@@ -199,9 +214,8 @@ examples = [
         'norm':'http://www.newegg.com/Unlocked-Cell-phones/SubCategory/ID-2961',
         'action':'list',
         'c1': 'Unlocked-Cell-phones',
-        'word': 'SubCategory',
         'c1id': '2961',
-        'rule': 'list'
+        'rule': 'sub_list'
     }],
 
     ['http://www.newegg.com/DailyDeal.aspx?name=DailyDeal&cm_sp=Dailydeal-_-adlink-_-05042013,3',
@@ -244,29 +258,28 @@ examples = [
         'norm': 'http://www.newegg.com/Rosewill/BrandStore/ID-2177',
         'action': 'list',
         'c1': 'Rosewill',
-        'word': 'BrandStore',
         'c1id': '2177',
-        'rule': 'list'
+        'rule': 'brand_list'
     }],
 
     ['http://secure.newegg.com/Shopping/AddToCart.aspx?Submit=Add&amp;amp;ItemList=9SIA1140B48181%7C1&amp;amp;OptionItemList=&amp;amp;PreItemList=&amp;amp;EWTList=&amp;amp;ItemProhibited=&amp;amp;isAit=0,1',
     {
         'norm': 'http://secure.newegg.com/Shopping/AddToCart.aspx',
-        'action': 'cart',
+        'action': 'add cart',
         'rule': 'add_cart',
     }],
 
     ['http://www.newegg.com/Shopping/ShoppingItem.aspx?ItemList=N82E16830120700',
     {
         'norm': 'http://www.newegg.com/Shopping/ShoppingItem.aspx',
-        'action': 'cart',
+        'action': 'view cart',
         'rule': 'view_shop_item'
     }],
 
     ['http://secure.newegg.com/Shopping/ShoppingCart.aspx?RandomID=43130209402087820130307123306,3',
     {
         'norm': 'http://secure.newegg.com/Shopping/ShoppingCart.aspx',
-        'action': 'cart',
+        'action': 'view cart',
         'rule': 'view_shop_cart'
     }],
 
@@ -274,32 +287,8 @@ examples = [
     {
         'norm': 'https://secure.newegg.com/Shopping/CheckoutStep1.aspx',
         'action': 'checkout',
-        'word': 'Shopping',                
-        'num': '1',        
         'rule': 'checkout'
     }],
 
-    ['https://secure.newegg.com/Guest/CheckoutStep3.aspx?CartID=328%2bQRAJR2XQH4GNTQ4&amp;amp;PaypalMark=1&amp;amp;flag=1',
-    {
-        'norm': 'https://secure.newegg.com/Guest/CheckoutStep3.aspx',
-        'action': 'checkout',
-        'word': 'Guest',                
-        'num': '3',        
-        'rule': 'checkout'
-    }],
-
-    ['https://secure.newegg.com/Guest/CheckoutStep4.aspx?CartID=949EB_PLUSNH7T3LKZQWF4MHO&SONumbers=215687198',
-    {
-        'norm': 'https://secure.newegg.com/Guest/CheckoutStep4.aspx',
-        'action': 'purchase',    
-        'rule': 'purchase_guest'
-    }],
-
-    ['https://secure.newegg.com/Shopping/CheckoutStep3.aspx?CartID=986%2bL0B1XDS7Q3PD0IO&amp;amp;SONumbers=154974416',
-    {
-        'norm': 'https://secure.newegg.com/Shopping/CheckoutStep3.aspx',
-        'action': 'purchase',    
-        'rule': 'purchase_registered'
-    }],
 ]
 
