@@ -24,7 +24,7 @@ out_hdlr.setLevel(logging.INFO)
 logger.addHandler(out_hdlr)
 logger.setLevel(logging.INFO)
 
-OKCOIN_URL = "https://www.okcoin.com/api/ticker.do?symbol=ltc_cny"
+OKCOIN_URL = "http://www.okcoin.com/api/ticker.do?symbol=ltc_cny"
 
 def create_request(url, headers=None):
     request = urllib2.Request(url)
@@ -108,14 +108,15 @@ class WavePlayer(threading.Thread) :
 
 
 class EasyWorker:
-    def __init__(self, mav_value):
+    def __init__(self, min_val, max_val):
         self.qin = queue.Queue(0)
         self.jobs = [gevent.spawn(self.do_fetch_data)]
         self.jobs += [gevent.spawn(self.do_alarmer)]
         self.job_count = len(self.jobs)
         self.headers = dict()
         self.headers['Accept'] = 'application/json;q=0.9,image/webp,*/*;q=0.8'
-        self.max = float(mav_value)
+        self.min = min_val
+        self.max = max_val
         self.alarming = False
 
     def start(self):
@@ -142,28 +143,23 @@ class EasyWorker:
                 try:
                     if res['code'] == 200:
                         last = float(res['last'])
-                        print "last value:", last, self.max
+                        print "last value:", last, self.min, self.max
                         if last >= self.max and self.alarming == False:
                             self.qin.put("startalarm")
-                            print "start alarm"
+                            print "start max alarm"
 
-                        if last < self.max and self.alarming == True:
+                        if last <= self.min and self.alarming == False:
+                            self.qin.put("startalarm")
+                            print "start min alarm"
+
+                        if last < self.max and last > self.min and self.alarming == True:
                             self.qin.put("stopalarm")
-                            logging.debug( "stop alarm")
+                            print( "stop alarm")
 
                 except Exception, e:
                     pass
                 
-                # count += 1
-                # print "fetch data: ", count
-                # if count==3 or count == 50:
-                #     self.qin.put("startalarm")
-                #     print "start alarm"
-
-
-                # if count == 20 or count == 80:
-                #     self.qin.put("stopalarm")
-                #     logging.debug( "stop alarm")
+                
 
                 sleep(6)
 
@@ -241,8 +237,10 @@ class EasyWorker:
 
 if __name__ == "__main__":
     logger.debug("start bitfrom") 
-    maxval = sys.argv[1]
-    worker = EasyWorker(maxval)
+    minval = float(sys.argv[1])
+    maxval = float(sys.argv[2])
+
+    worker = EasyWorker(minval, maxval)
     worker.start()
     # res = worker.fetch_data('https://www.okcoin.com/api/ticker.do?symbol=ltc_cny')
     # print 'last = %s' % res['last']
