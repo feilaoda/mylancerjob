@@ -16,6 +16,14 @@ import traceback
 import threading
 import json
 import urllib2
+import redis
+import tornadoredis
+
+#tc = tornadoredis.Client()
+#tc.connect()
+tc =  redis.Redis()
+
+
 
 logger = logging.getLogger(__name__)
 out_hdlr = logging.StreamHandler(sys.stdout)
@@ -143,6 +151,7 @@ class EasyWorker:
                 try:
                     if res['code'] == 200:
                         last = float(res['last'])
+                        tc.publish('okcoin_ltc', last)
                         print "last value:", last, self.min, self.max
                         if last >= self.max and self.alarming == False:
                             self.qin.put("startalarm")
@@ -161,7 +170,7 @@ class EasyWorker:
                 
                 
 
-                sleep(6)
+                sleep(8)
 
         except Exception, e:
             logging.error("Scheduler Error!\n%s" % traceback.format_exc())
